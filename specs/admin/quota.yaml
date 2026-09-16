@@ -1,0 +1,6751 @@
+components:
+  schemas:
+    APIEndpointInfoResponse:
+      additionalProperties: false
+      properties:
+        method:
+          type: string
+        path:
+          type: string
+      required:
+      - method
+      - path
+      type: object
+    AddPlanToPriceLineRequest:
+      additionalProperties: false
+      properties:
+        plan_id:
+          type: integer
+        position:
+          type: integer
+      required:
+      - plan_id
+      - position
+      type: object
+    AdminCancelSubscriptionRequest:
+      additionalProperties: false
+      properties:
+        immediate:
+          type: boolean
+        mode:
+          type: string
+      type: object
+    AdminChangePlanRequest:
+      additionalProperties: false
+      properties:
+        period_id:
+          type: integer
+      required:
+      - period_id
+      type: object
+    AllowanceGrantRequest:
+      additionalProperties: false
+      properties:
+        download:
+          type: integer
+        expiry_date:
+          format: date-time
+          type: string
+        source:
+          enum:
+          - SUBSCRIPTION
+          - PAYG_ADDON
+          - BONUS
+          - PROMO
+          type: string
+        storage:
+          type: integer
+        type:
+          enum:
+          - STORAGE
+          - UPLOAD
+          - DOWNLOAD
+          type: string
+        upload:
+          type: integer
+        user_id:
+          type: integer
+      required:
+      - user_id
+      - type
+      - source
+      - storage
+      - upload
+      - download
+      - expiry_date
+      type: object
+    AllowanceGrantResponse:
+      additionalProperties: false
+      properties:
+        bytes:
+          type: integer
+        bytes_remaining:
+          type: integer
+        bytes_used:
+          type: integer
+        created_at:
+          format: date-time
+          type: string
+        expiry_date:
+          format: date-time
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        source:
+          enum:
+          - SUBSCRIPTION
+          - PAYG_ADDON
+          - BONUS
+          - PROMO
+          type: string
+        type:
+          enum:
+          - storage
+          - upload
+          - download
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+      required:
+      - id
+      - user_id
+      - type
+      - source
+      - bytes
+      - bytes_used
+      - bytes_remaining
+      - expiry_date
+      - is_active
+      - created_at
+      - updated_at
+      type: object
+    AllowanceListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/AllowanceGrantResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    BalanceResponse:
+      additionalProperties: false
+      properties:
+        balance:
+          $ref: '#/components/schemas/Decimal'
+        user_id:
+          type: integer
+      required:
+      - user_id
+      - balance
+      type: object
+    BlockProfileRequest:
+      additionalProperties: false
+      properties:
+        rate:
+          type: integer
+      required:
+      - rate
+      type: object
+    CheckoutUIFragmentResponse:
+      additionalProperties: false
+      properties:
+        css:
+          type: string
+        html:
+          type: string
+        link:
+          type: string
+        metadata:
+          type: object
+        script:
+          type: string
+        type:
+          type: string
+      required:
+      - type
+      type: object
+    CleanupRequest:
+      additionalProperties: false
+      properties:
+        retention_days:
+          type: integer
+      required:
+      - retention_days
+      type: object
+    CleanupResponse:
+      additionalProperties: false
+      properties:
+        records_deleted:
+          type: integer
+      required:
+      - records_deleted
+      type: object
+    CreditCreateRequest:
+      additionalProperties: false
+      properties:
+        amount:
+          type: string
+        description:
+          type: string
+        direction:
+          type: string
+        reference_id:
+          type: string
+        reference_type:
+          type: string
+        type:
+          type: string
+        user_id:
+          type: integer
+      required:
+      - user_id
+      - amount
+      - type
+      - direction
+      type: object
+    CreditItem:
+      additionalProperties: false
+      properties:
+        amount:
+          $ref: '#/components/schemas/Decimal'
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: integer
+        deleted_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        direction:
+          type: string
+        id:
+          $ref: '#/components/schemas/UUID'
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+      required:
+      - id
+      - user_id
+      - amount
+      - type
+      - direction
+      - created_by
+      - created_at
+      - updated_at
+      type: object
+    CreditPurgeRequest:
+      additionalProperties: false
+      properties:
+        older_than:
+          type: string
+      required:
+      - older_than
+      type: object
+    CreditPurgeResponse:
+      additionalProperties: false
+      properties:
+        purged_count:
+          type: integer
+      required:
+      - purged_count
+      type: object
+    CreditResponse:
+      additionalProperties: false
+      properties:
+        amount:
+          $ref: '#/components/schemas/Decimal'
+        created_at:
+          format: date-time
+          type: string
+        created_by:
+          type: integer
+        deleted_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        direction:
+          type: string
+        id:
+          $ref: '#/components/schemas/UUID'
+        metadata:
+          type: object
+        reference_id:
+          type: string
+        reference_type:
+          type: string
+        type:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+      required:
+      - id
+      - user_id
+      - amount
+      - type
+      - direction
+      - created_by
+      - created_at
+      - updated_at
+      type: object
+    CreditsListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CreditItem'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    DNSDelegation:
+      additionalProperties: false
+      properties:
+        authoritative_records:
+          items:
+            $ref: '#/components/schemas/DNSDelegationRecord'
+          type: array
+        dnssec:
+          type: string
+        dnssec_error:
+          type: string
+        mode:
+          type: string
+        nameservers:
+          items:
+            type: string
+          type: array
+        parent_records:
+          items:
+            $ref: '#/components/schemas/DNSDelegationRecord'
+          type: array
+      type: object
+    DNSDelegationRecord:
+      additionalProperties: false
+      properties:
+        address:
+          type: string
+        ns:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+      required:
+      - type
+      type: object
+    Decimal:
+      additionalProperties: false
+      type: object
+    DeletedCreditsListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CreditItem'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    DomainResponse:
+      additionalProperties: false
+      properties:
+        checks:
+          items:
+            $ref: '#/components/schemas/ValidationCheck'
+          type: array
+        delegation:
+          $ref: '#/components/schemas/DNSDelegation'
+        dns_hosting_enabled:
+          type: boolean
+        domain:
+          type: string
+        gateway_host:
+          type: string
+        id:
+          type: integer
+        namespace:
+          enum:
+          - icann
+          - hns
+          type: string
+        owner_name:
+          type: string
+        ssl:
+          $ref: '#/components/schemas/SSLStatusInfo'
+        status:
+          enum:
+          - draft
+          - records_generated
+          - waiting_delegation
+          - active
+          - self_hosted
+          - error
+          - onchain_managed
+          type: string
+        tlsa_rdata:
+          type: string
+        zone_name:
+          type: string
+      required:
+      - id
+      - domain
+      - namespace
+      - dns_hosting_enabled
+      type: object
+    ErrorDetail:
+      additionalProperties: false
+      properties:
+        details:
+          type: string
+        reason:
+          type: string
+      required:
+      - reason
+      type: object
+    ErrorResponse:
+      additionalProperties: false
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+      required:
+      - error
+      type: object
+    IPNSRepublishResponse:
+      additionalProperties: false
+      properties:
+        count:
+          type: integer
+        message:
+          type: string
+      required:
+      - count
+      - message
+      type: object
+    ManagementResultResponse:
+      additionalProperties: false
+      properties:
+        action:
+          type: string
+        api_endpoint:
+          $ref: '#/components/schemas/APIEndpointInfoResponse'
+        can_abort:
+          type: boolean
+        confirmation_message:
+          type: string
+        effective_time:
+          format: date-time
+          type: string
+        error_message:
+          type: string
+        requires_confirmation:
+          type: boolean
+        status:
+          type: string
+        url:
+          type: string
+      required:
+      - action
+      - requires_confirmation
+      - status
+      - can_abort
+      type: object
+    MutexProfileRequest:
+      additionalProperties: false
+      properties:
+        fraction:
+          type: integer
+      required:
+      - fraction
+      type: object
+    PlanChangeResultResponse:
+      additionalProperties: false
+      properties:
+        action:
+          type: string
+        charge_due:
+          $ref: '#/components/schemas/Decimal'
+        checkout_link:
+          type: string
+        credit_applied:
+          $ref: '#/components/schemas/Decimal'
+        effective_date:
+          format: date-time
+          type: string
+        fragments:
+          items:
+            $ref: '#/components/schemas/CheckoutUIFragmentResponse'
+          type: array
+      required:
+      - action
+      - credit_applied
+      - charge_due
+      type: object
+    PlanListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/QuotaPlanResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    PlatformDomainBindRequest:
+      additionalProperties: false
+      properties:
+        website_id:
+          type: integer
+      required:
+      - website_id
+      type: object
+    PlatformDomainListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PlatformDomainResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    PlatformDomainRequest:
+      additionalProperties: false
+      properties:
+        domain:
+          type: string
+        enabled:
+          type: boolean
+        namespace:
+          type: string
+      required:
+      - domain
+      type: object
+    PlatformDomainResponse:
+      additionalProperties: false
+      properties:
+        domain:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: integer
+        namespace:
+          type: string
+        zone_id:
+          type: integer
+      required:
+      - id
+      - domain
+      - namespace
+      - zone_id
+      - enabled
+      type: object
+    PlatformDomainUpdateRequest:
+      additionalProperties: false
+      properties:
+        enabled:
+          type: boolean
+      required:
+      - enabled
+      type: object
+    PriceLineCreateRequest:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        is_active:
+          type: boolean
+        is_default:
+          type: boolean
+        name:
+          type: string
+      required:
+      - name
+      - description
+      - is_active
+      - is_default
+      type: object
+    PriceLineDetailResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        is_default:
+          type: boolean
+        name:
+          type: string
+        plans:
+          items:
+            $ref: '#/components/schemas/PricingPlanItem'
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - name
+      - description
+      - is_active
+      - is_default
+      - created_at
+      - updated_at
+      type: object
+    PriceLineResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        is_default:
+          type: boolean
+        name:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - name
+      - description
+      - is_active
+      - is_default
+      - created_at
+      - updated_at
+      type: object
+    PriceLineUpdateRequest:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        is_active:
+          type: boolean
+        is_default:
+          type: boolean
+        name:
+          type: string
+      required:
+      - name
+      - description
+      - is_active
+      - is_default
+      type: object
+    PriceLinesListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PriceLineResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    PricingPeriodCreateInput:
+      additionalProperties: false
+      properties:
+        allow_free:
+          type: boolean
+        cadence:
+          type: string
+        is_active:
+          type: boolean
+        price_usd:
+          type: number
+        quota_plan_id:
+          type: integer
+        rolling_days:
+          type: integer
+      required:
+      - cadence
+      - price_usd
+      - quota_plan_id
+      - is_active
+      type: object
+    PricingPeriodInput:
+      additionalProperties: false
+      properties:
+        allow_free:
+          type: boolean
+        cadence:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        price_usd:
+          type: number
+        quota_plan_id:
+          type: integer
+        rolling_days:
+          type: integer
+      required:
+      - cadence
+      - price_usd
+      - quota_plan_id
+      - is_active
+      type: object
+    PricingPlanCreateRequest:
+      additionalProperties: false
+      properties:
+        currency:
+          type: string
+        description:
+          type: string
+        features:
+          items:
+            type: string
+          type: array
+        is_active:
+          type: boolean
+        is_public:
+          type: boolean
+        name:
+          type: string
+        position:
+          type: integer
+        priceline_id:
+          type: integer
+        pricing_periods:
+          items:
+            $ref: '#/components/schemas/PricingPeriodCreateInput'
+          type: array
+      required:
+      - name
+      - description
+      - features
+      - pricing_periods
+      - currency
+      - is_active
+      - is_public
+      type: object
+    PricingPlanItem:
+      additionalProperties: false
+      properties:
+        currency:
+          type: string
+        description:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        monthly_price:
+          type: number
+        name:
+          type: string
+        position:
+          type: integer
+        pricing_periods:
+          items:
+            $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          type: array
+        yearly_price:
+          type: number
+      required:
+      - id
+      - name
+      - description
+      - currency
+      - is_active
+      - position
+      - pricing_periods
+      type: object
+    PricingPlanPeriodCreateRequest:
+      additionalProperties: false
+      properties:
+        allow_free:
+          type: boolean
+        cadence:
+          type: string
+        price_usd:
+          type: number
+        pricing_plan_id:
+          type: integer
+        quota_plan_id:
+          type: integer
+        rolling_days:
+          type: integer
+      required:
+      - pricing_plan_id
+      - cadence
+      - price_usd
+      - quota_plan_id
+      type: object
+    PricingPlanPeriodDTO:
+      additionalProperties: false
+      properties:
+        allow_free:
+          type: boolean
+        cadence:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        price_usd:
+          type: number
+        pricing_plan_id:
+          type: integer
+        quota_plan_id:
+          type: integer
+        rolling_days:
+          type: integer
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - pricing_plan_id
+      - cadence
+      - price_usd
+      - quota_plan_id
+      - allow_free
+      - is_active
+      - created_at
+      - updated_at
+      type: object
+    PricingPlanPeriodUpdateRequest:
+      additionalProperties: false
+      properties:
+        allow_free:
+          type: boolean
+        cadence:
+          type: string
+        price_usd:
+          type: number
+        quota_plan_id:
+          type: integer
+        rolling_days:
+          type: integer
+      required:
+      - cadence
+      - price_usd
+      - quota_plan_id
+      type: object
+    PricingPlanPeriodsListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    PricingPlanResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        currency:
+          type: string
+        description:
+          type: string
+        features:
+          items:
+            type: string
+          type: array
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        is_public:
+          type: boolean
+        name:
+          type: string
+        pricing_periods:
+          items:
+            $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          type: array
+        updated_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - name
+      - description
+      - currency
+      - is_active
+      - is_public
+      - features
+      - pricing_periods
+      - created_at
+      - updated_at
+      type: object
+    PricingPlanUpdateRequest:
+      additionalProperties: false
+      properties:
+        currency:
+          type: string
+        description:
+          type: string
+        features:
+          items:
+            type: string
+          type: array
+        is_active:
+          type: boolean
+        is_public:
+          type: boolean
+        name:
+          type: string
+        pricing_periods:
+          items:
+            $ref: '#/components/schemas/PricingPeriodInput'
+          type: array
+      required:
+      - name
+      - description
+      - features
+      - pricing_periods
+      - currency
+      - is_active
+      - is_public
+      type: object
+    PricingPlansListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PricingPlanItem'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    ProfilingStatusResponse:
+      additionalProperties: false
+      properties:
+        block_profile_rate:
+          type: integer
+        mutex_fraction:
+          type: integer
+      required:
+      - block_profile_rate
+      - mutex_fraction
+      type: object
+    QuotaPlanRequest:
+      additionalProperties: false
+      properties:
+        description:
+          type: string
+        download_limit_bytes:
+          type: integer
+        download_threshold:
+          type: integer
+        excluded_from_health_reports:
+          type: boolean
+        is_active:
+          type: boolean
+        name:
+          type: string
+        storage_limit_bytes:
+          type: integer
+        storage_threshold:
+          type: integer
+        upload_limit_bytes:
+          type: integer
+        upload_threshold:
+          type: integer
+        window_duration:
+          type: integer
+        window_start_hour:
+          type: integer
+        window_timezone:
+          type: string
+        window_type:
+          type: string
+      required:
+      - name
+      - description
+      - window_type
+      - window_duration
+      - window_start_hour
+      - window_timezone
+      - storage_limit_bytes
+      - upload_limit_bytes
+      - download_limit_bytes
+      - storage_threshold
+      - upload_threshold
+      - download_threshold
+      - is_active
+      - excluded_from_health_reports
+      type: object
+    QuotaPlanResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        description:
+          type: string
+        download_limit_bytes:
+          type: integer
+        download_threshold:
+          type: integer
+        excluded_from_health_reports:
+          type: boolean
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        is_default:
+          type: boolean
+        name:
+          type: string
+        storage_limit_bytes:
+          type: integer
+        storage_threshold:
+          type: integer
+        updated_at:
+          format: date-time
+          type: string
+        upload_limit_bytes:
+          type: integer
+        upload_threshold:
+          type: integer
+        window_duration:
+          type: integer
+        window_start_hour:
+          type: integer
+        window_timezone:
+          type: string
+        window_type:
+          type: string
+      required:
+      - id
+      - name
+      - description
+      - window_type
+      - window_duration
+      - window_start_hour
+      - window_timezone
+      - storage_limit_bytes
+      - upload_limit_bytes
+      - download_limit_bytes
+      - storage_threshold
+      - upload_threshold
+      - download_threshold
+      - is_default
+      - is_active
+      - excluded_from_health_reports
+      - created_at
+      - updated_at
+      type: object
+    ReconcileRequest:
+      additionalProperties: false
+      properties:
+        user_id:
+          type: integer
+      type: object
+    ReconcileResponse:
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+        users_processed:
+          type: integer
+      required:
+      - users_processed
+      - message
+      type: object
+    SSLStatusInfo:
+      additionalProperties: false
+      properties:
+        error:
+          type: string
+        issued_at:
+          format: date-time
+          type: string
+        last_updated_at:
+          format: date-time
+          type: string
+        status:
+          enum:
+          - pending
+          - issuing
+          - ready
+          - failed
+          type: string
+      required:
+      - status
+      type: object
+    SocialProviderListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SocialProviderResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    SocialProviderRequest:
+      additionalProperties: false
+      properties:
+        auth_url:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        display_name:
+          type: string
+        enabled:
+          type: boolean
+        order_index:
+          type: integer
+        provider_id:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+        token_url:
+          type: string
+        user_email_key:
+          type: string
+        user_id_key:
+          type: string
+        user_name_key:
+          type: string
+        user_url:
+          type: string
+      required:
+      - provider_id
+      - display_name
+      - client_id
+      - client_secret
+      - scopes
+      - auth_url
+      - token_url
+      - user_url
+      - user_id_key
+      - user_email_key
+      - user_name_key
+      - enabled
+      - order_index
+      type: object
+    SocialProviderResponse:
+      additionalProperties: false
+      properties:
+        auth_url:
+          type: string
+        client_id:
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        display_name:
+          type: string
+        enabled:
+          type: boolean
+        id:
+          type: integer
+        order_index:
+          type: integer
+        provider_id:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+        token_url:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_email_key:
+          type: string
+        user_id_key:
+          type: string
+        user_name_key:
+          type: string
+        user_url:
+          type: string
+      required:
+      - id
+      - provider_id
+      - display_name
+      - client_id
+      - scopes
+      - auth_url
+      - token_url
+      - user_url
+      - user_id_key
+      - user_email_key
+      - user_name_key
+      - enabled
+      - order_index
+      - created_at
+      - updated_at
+      type: object
+    SocialProviderUpdateRequest:
+      additionalProperties: false
+      properties:
+        auth_url:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        display_name:
+          type: string
+        enabled:
+          type: boolean
+        order_index:
+          type: integer
+        provider_id:
+          type: string
+        scopes:
+          items:
+            type: string
+          type: array
+        token_url:
+          type: string
+        user_email_key:
+          type: string
+        user_id_key:
+          type: string
+        user_name_key:
+          type: string
+        user_url:
+          type: string
+      type: object
+    SubscriberItem:
+      additionalProperties: false
+      properties:
+        billing_period_end:
+          format: date-time
+          type: string
+        billing_period_start:
+          format: date-time
+          type: string
+        cancelled_at:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        gateway_type:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        paused_at:
+          format: date-time
+          type: string
+        payment_status:
+          type: string
+        previous_plan_id:
+          type: integer
+        pricing_plan_period_id:
+          type: integer
+        subscription_id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+        will_cancel_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - user_id
+      - gateway_type
+      - external_id
+      - subscription_id
+      - is_active
+      - created_at
+      - updated_at
+      type: object
+    SubscriberResponse:
+      additionalProperties: false
+      properties:
+        billing_period_end:
+          format: date-time
+          type: string
+        billing_period_start:
+          format: date-time
+          type: string
+        cancelled_at:
+          format: date-time
+          type: string
+        created_at:
+          format: date-time
+          type: string
+        external_id:
+          type: string
+        gateway_type:
+          type: string
+        id:
+          type: integer
+        is_active:
+          type: boolean
+        paused_at:
+          format: date-time
+          type: string
+        payment_status:
+          type: string
+        previous_plan_id:
+          type: integer
+        pricing_plan_period_id:
+          type: integer
+        subscription_id:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        user_id:
+          type: integer
+        will_cancel_at:
+          format: date-time
+          type: string
+      required:
+      - id
+      - user_id
+      - gateway_type
+      - external_id
+      - subscription_id
+      - is_active
+      - created_at
+      - updated_at
+      type: object
+    SubscribersListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/SubscriberItem'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    SystemStatsResponse:
+      additionalProperties: false
+      properties:
+        active_users:
+          type: integer
+        current_usage:
+          $ref: '#/components/schemas/Usage'
+        total_active_grants:
+          type: integer
+        total_active_plans:
+          type: integer
+        total_grants:
+          type: integer
+        total_plans:
+          type: integer
+        total_usage_bytes:
+          type: integer
+        total_users:
+          type: integer
+      required:
+      - total_users
+      - active_users
+      - total_plans
+      - total_active_plans
+      - total_grants
+      - total_active_grants
+      - current_usage
+      - total_usage_bytes
+      type: object
+    UUID:
+      items:
+        type: integer
+      maxItems: 16
+      minItems: 16
+      type: array
+    UpdatePlanPositionRequest:
+      additionalProperties: false
+      properties:
+        position:
+          type: integer
+      required:
+      - position
+      type: object
+    Usage:
+      additionalProperties: false
+      properties:
+        download_bytes:
+          type: integer
+        storage_bytes:
+          type: integer
+        upload_bytes:
+          type: integer
+      required:
+      - storage_bytes
+      - upload_bytes
+      - download_bytes
+      type: object
+    UserCreateRequest:
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+        verify_email:
+          type: boolean
+      required:
+      - email
+      - password
+      - verify_email
+      type: object
+    UserListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/UserResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    UserQuotaConfigListResponse:
+      additionalProperties: false
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/UserQuotaConfigResponse'
+          type: array
+        total:
+          type: integer
+      required:
+      - data
+      - total
+      type: object
+    UserQuotaConfigResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        download_limit_bytes:
+          type: integer
+        download_threshold:
+          type: integer
+        enforcement_policy:
+          enum:
+          - HARD_LIMITS
+          - UNLIMITED
+          - ALLOWANCE
+          - THRESHOLD
+          type: string
+        excluded_from_health_reports:
+          type: boolean
+        id:
+          type: integer
+        quota_plan_id:
+          type: integer
+        storage_limit_bytes:
+          type: integer
+        storage_threshold:
+          type: integer
+        updated_at:
+          format: date-time
+          type: string
+        upload_limit_bytes:
+          type: integer
+        upload_threshold:
+          type: integer
+        user_id:
+          type: integer
+        window_duration:
+          type: integer
+        window_start_hour:
+          type: integer
+        window_timezone:
+          type: string
+        window_type:
+          type: string
+      required:
+      - id
+      - user_id
+      - enforcement_policy
+      - excluded_from_health_reports
+      - created_at
+      - updated_at
+      type: object
+    UserQuotaConfigUpdateRequest:
+      additionalProperties: false
+      properties:
+        download_limit_bytes:
+          type: integer
+        download_threshold:
+          type: integer
+        enforcement_policy:
+          enum:
+          - HARD_LIMITS
+          - UNLIMITED
+          - ALLOWANCE
+          - THRESHOLD
+          type: string
+        excluded_from_health_reports:
+          type: boolean
+        quota_plan_id:
+          type: integer
+        storage_limit_bytes:
+          type: integer
+        storage_threshold:
+          type: integer
+        upload_limit_bytes:
+          type: integer
+        upload_threshold:
+          type: integer
+        window_duration:
+          type: integer
+        window_start_hour:
+          type: integer
+        window_timezone:
+          type: string
+        window_type:
+          type: string
+      type: object
+    UserResponse:
+      additionalProperties: false
+      properties:
+        created_at:
+          format: date-time
+          type: string
+        email:
+          type: string
+        first_name:
+          type: string
+        id:
+          type: integer
+        last_login:
+          format: date-time
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+        updated_at:
+          format: date-time
+          type: string
+        verified:
+          type: boolean
+      required:
+      - id
+      - first_name
+      - last_name
+      - email
+      - role
+      - verified
+      - created_at
+      - updated_at
+      type: object
+    UserUpdateRequest:
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        password:
+          type: string
+        verified:
+          type: boolean
+      type: object
+    ValidationCheck:
+      additionalProperties: false
+      properties:
+        expected:
+          type: string
+        found:
+          type: string
+        message:
+          type: string
+        name:
+          type: string
+        ok:
+          type: boolean
+      required:
+      - name
+      - ok
+      type: object
+    WebsiteResponse:
+      additionalProperties: false
+      properties:
+        active_cid:
+          type: string
+        created:
+          format: date-time
+          type: string
+        dns_hosting_enabled:
+          type: boolean
+        domain:
+          type: string
+        expired:
+          type: boolean
+        gateway_domain:
+          type: string
+        id:
+          type: integer
+        ipns_key_id:
+          type: integer
+        is_subdomain:
+          type: boolean
+        last_checked_at:
+          format: date-time
+          type: string
+        ssl:
+          $ref: '#/components/schemas/SSLStatusInfo'
+        status:
+          type: string
+        target_hash:
+          type: string
+        target_type:
+          type: string
+        updated:
+          format: date-time
+          type: string
+        validation_expires_at:
+          format: date-time
+          type: string
+        validation_record_host:
+          type: string
+        validation_token:
+          type: string
+        zone_id:
+          type: integer
+      required:
+      - id
+      - domain
+      - target_type
+      - target_hash
+      - status
+      - validation_token
+      - dns_hosting_enabled
+      - is_subdomain
+      - created
+      - updated
+      - expired
+      type: object
+info:
+  description: Provides administrative endpoints for managing the Portal.
+  title: Portal Admin API
+  version: unknown
+openapi: 3.0.0
+paths:
+  /api/billing/credits:
+    get:
+      description: Retrieves all credits with filtering, sorting, and pagination support
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      - description: Filter by direction contains
+        in: query
+        name: direction_contains
+        schema:
+          type: string
+      - description: Filter by direction endswith
+        in: query
+        name: direction_endswith
+        schema:
+          type: string
+      - description: Filter by direction eq
+        in: query
+        name: direction_eq
+        schema:
+          type: string
+      - description: Filter by direction ne
+        in: query
+        name: direction_ne
+        schema:
+          type: string
+      - description: Filter by direction startswith
+        in: query
+        name: direction_startswith
+        schema:
+          type: string
+      - description: Filter by direction contains
+        in: query
+        name: filters[direction][contains]
+        schema:
+          type: string
+      - description: Filter by direction endswith
+        in: query
+        name: filters[direction][endswith]
+        schema:
+          type: string
+      - description: Filter by direction eq
+        in: query
+        name: filters[direction][eq]
+        schema:
+          type: string
+      - description: Filter by direction ne
+        in: query
+        name: filters[direction][ne]
+        schema:
+          type: string
+      - description: Filter by direction startswith
+        in: query
+        name: filters[direction][startswith]
+        schema:
+          type: string
+      - description: Filter by type contains
+        in: query
+        name: filters[type][contains]
+        schema:
+          type: string
+      - description: Filter by type endswith
+        in: query
+        name: filters[type][endswith]
+        schema:
+          type: string
+      - description: Filter by type eq
+        in: query
+        name: filters[type][eq]
+        schema:
+          type: string
+      - description: Filter by type ne
+        in: query
+        name: filters[type][ne]
+        schema:
+          type: string
+      - description: Filter by type startswith
+        in: query
+        name: filters[type][startswith]
+        schema:
+          type: string
+      - description: Filter by user_id between
+        in: query
+        name: filters[user_id][between]
+        schema:
+          type: string
+      - description: Filter by user_id eq
+        in: query
+        name: filters[user_id][eq]
+        schema:
+          type: string
+      - description: Filter by user_id gt
+        in: query
+        name: filters[user_id][gt]
+        schema:
+          type: string
+      - description: Filter by user_id gte
+        in: query
+        name: filters[user_id][gte]
+        schema:
+          type: string
+      - description: Filter by user_id lt
+        in: query
+        name: filters[user_id][lt]
+        schema:
+          type: string
+      - description: Filter by user_id lte
+        in: query
+        name: filters[user_id][lte]
+        schema:
+          type: string
+      - description: Filter by user_id ne
+        in: query
+        name: filters[user_id][ne]
+        schema:
+          type: string
+      - description: Filter by type contains
+        in: query
+        name: type_contains
+        schema:
+          type: string
+      - description: Filter by type endswith
+        in: query
+        name: type_endswith
+        schema:
+          type: string
+      - description: Filter by type eq
+        in: query
+        name: type_eq
+        schema:
+          type: string
+      - description: Filter by type ne
+        in: query
+        name: type_ne
+        schema:
+          type: string
+      - description: Filter by type startswith
+        in: query
+        name: type_startswith
+        schema:
+          type: string
+      - description: Filter by user_id eq
+        in: query
+        name: user_id_eq
+        schema:
+          type: string
+      - description: Filter by user_id gt
+        in: query
+        name: user_id_gt
+        schema:
+          type: string
+      - description: Filter by user_id gte
+        in: query
+        name: user_id_gte
+        schema:
+          type: string
+      - description: Filter by user_id lt
+        in: query
+        name: user_id_lt
+        schema:
+          type: string
+      - description: Filter by user_id lte
+        in: query
+        name: user_id_lte
+        schema:
+          type: string
+      - description: Filter by user_id ne
+        in: query
+        name: user_id_ne
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditsListResponse'
+          description: Credits retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: List Credits
+      tags:
+      - Billing Admin
+    post:
+      description: Creates a new credit entry. Returns 201 for new credits or 200
+        if credit already exists (idempotent via reference_id)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCreateRequest'
+        description: Credit creation request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditResponse'
+          description: Credit already exists (idempotent)
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditResponse'
+          description: Credit created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Create Credit
+      tags:
+      - Billing Admin
+  /api/billing/credits/{id}:
+    delete:
+      description: Soft deletes a credit entry
+      parameters:
+      - description: Credit ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Credit deleted successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Delete Credit
+      tags:
+      - Billing Admin
+    get:
+      description: Retrieves a credit by ID
+      parameters:
+      - description: Credit ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditResponse'
+          description: Credit retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Get Credit
+      tags:
+      - Billing Admin
+  /api/billing/credits/{id}/restore:
+    post:
+      description: Restores a soft-deleted credit
+      parameters:
+      - description: Credit ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditResponse'
+          description: Credit restored successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Restore Credit
+      tags:
+      - Billing Admin
+  /api/billing/credits/purge:
+    post:
+      description: Permanently removes soft-deleted credits older than specified duration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditPurgeRequest'
+        description: Purge request with duration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurgeResponse'
+          description: Credits purged successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Purge Credits
+      tags:
+      - Billing Admin
+  /api/billing/gateways/{gatewayId}/subscribers:
+    get:
+      description: Retrieves active subscribers for a specific payment gateway
+      parameters:
+      - description: Gateway ID
+        in: path
+        name: gatewayId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribersListResponse'
+          description: Gateway subscribers retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: List Gateway Subscribers
+      tags:
+      - Billing Admin
+  /api/billing/plans/{id}/sync:
+    post:
+      description: Triggers immediate synchronization of pricing plan with payment
+        gateway
+      parameters:
+      - description: Plan ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Sync task queued
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Sync Pricing Plan to Gateway
+      tags:
+      - Billing Admin
+  /api/billing/price-lines:
+    get:
+      description: Retrieves all price lines with filtering, sorting, and pagination
+        support
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLinesListResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List Price Lines
+      tags:
+      - Billing Admin
+    post:
+      description: Creates a new price line
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceLineCreateRequest'
+        description: Price line creation request
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLineResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create Price Line
+      tags:
+      - Billing Admin
+  /api/billing/price-lines/{id}:
+    delete:
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete Price Line
+      tags:
+      - Billing Admin
+    get:
+      description: Retrieves a specific price line by ID with its associated plans
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLineDetailResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get Price Line
+      tags:
+      - Billing Admin
+    put:
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceLineUpdateRequest'
+        description: Price line update request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLineResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update Price Line
+      tags:
+      - Billing Admin
+  /api/billing/price-lines/{id}/plan:
+    post:
+      description: Adds a pricing plan to a price line with a specified position
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPlanToPriceLineRequest'
+        description: Plan to add with position
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLineDetailResponse'
+          description: Plan added to price line
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Add Plan to Price Line
+      tags:
+      - Billing Admin
+  /api/billing/price-lines/{id}/plans/{planId}:
+    delete:
+      description: Removes a pricing plan from a price line and reorders remaining
+        plans
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Plan ID
+        in: path
+        name: planId
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Plan removed from price line
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Remove Plan from Price Line
+      tags:
+      - Billing Admin
+    put:
+      description: Updates the position of a plan within a price line, reordering
+        other plans as needed
+      parameters:
+      - description: Price Line ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Plan ID
+        in: path
+        name: planId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePlanPositionRequest'
+        description: New position for the plan
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PriceLineDetailResponse'
+          description: Plan position updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update Plan Position
+      tags:
+      - Billing Admin
+  /api/billing/pricing-plan-periods:
+    get:
+      description: Retrieves all pricing plan periods with filtering, sorting, and
+        pagination support
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanPeriodsListResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List Pricing Plan Periods
+      tags:
+      - Billing Admin
+    post:
+      description: Creates a new pricing plan period with billing cadence information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricingPlanPeriodCreateRequest'
+        description: Pricing plan period creation request
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create Pricing Plan Period
+      tags:
+      - Billing Admin
+  /api/billing/pricing-plan-periods/{id}:
+    delete:
+      description: Deletes a pricing plan period (soft delete)
+      parameters:
+      - description: Pricing Plan Period ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete Pricing Plan Period
+      tags:
+      - Billing Admin
+    get:
+      description: Retrieves a specific pricing plan period by ID
+      parameters:
+      - description: Pricing Plan Period ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get Pricing Plan Period
+      tags:
+      - Billing Admin
+    put:
+      description: Updates an existing pricing plan period
+      parameters:
+      - description: Pricing Plan Period ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricingPlanPeriodUpdateRequest'
+        description: Pricing plan period update request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanPeriodDTO'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update Pricing Plan Period
+      tags:
+      - Billing Admin
+  /api/billing/pricing-plans:
+    get:
+      description: Retrieves all pricing plans with filtering, sorting, and pagination
+        support
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlansListResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List Pricing Plans
+      tags:
+      - Billing Admin
+    post:
+      description: Creates a new pricing plan and queues gateway sync
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricingPlanCreateRequest'
+        description: Pricing plan creation request
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create Pricing Plan
+      tags:
+      - Billing Admin
+  /api/billing/pricing-plans/{id}:
+    delete:
+      parameters:
+      - description: Pricing Plan ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete Pricing Plan
+      tags:
+      - Billing Admin
+    get:
+      description: Retrieves a specific pricing plan by ID with its pricing periods
+      parameters:
+      - description: Pricing Plan ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get Pricing Plan
+      tags:
+      - Billing Admin
+    put:
+      parameters:
+      - description: Pricing Plan ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PricingPlanUpdateRequest'
+        description: Pricing plan update request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PricingPlanResponse'
+          description: ""
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update Pricing Plan
+      tags:
+      - Billing Admin
+  /api/billing/pricing-plans/sync-all:
+    post:
+      description: Triggers synchronization of all pricing plans with payment gateways
+        and returns results
+      responses:
+        "200":
+          description: Sync results
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Sync All Pricing Plans to Gateways
+      tags:
+      - Billing Admin
+  /api/billing/subscribers:
+    get:
+      description: Retrieves all subscribers with filtering, sorting, and pagination
+        support
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribersListResponse'
+          description: Subscribers retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: List Subscribers
+      tags:
+      - Billing Admin
+  /api/billing/subscribers/{id}:
+    get:
+      description: Retrieves a specific subscriber by ID
+      parameters:
+      - description: Subscriber ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriberResponse'
+          description: Subscriber retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Get Subscriber
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/balance:
+    get:
+      description: Retrieves the current balance for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+          description: Balance retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Get User Balance
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/deleted-credits:
+    get:
+      description: Retrieves soft-deleted credits for a user
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      - description: Filter by direction contains
+        in: query
+        name: direction_contains
+        schema:
+          type: string
+      - description: Filter by direction endswith
+        in: query
+        name: direction_endswith
+        schema:
+          type: string
+      - description: Filter by direction eq
+        in: query
+        name: direction_eq
+        schema:
+          type: string
+      - description: Filter by direction ne
+        in: query
+        name: direction_ne
+        schema:
+          type: string
+      - description: Filter by direction startswith
+        in: query
+        name: direction_startswith
+        schema:
+          type: string
+      - description: Filter by direction contains
+        in: query
+        name: filters[direction][contains]
+        schema:
+          type: string
+      - description: Filter by direction endswith
+        in: query
+        name: filters[direction][endswith]
+        schema:
+          type: string
+      - description: Filter by direction eq
+        in: query
+        name: filters[direction][eq]
+        schema:
+          type: string
+      - description: Filter by direction ne
+        in: query
+        name: filters[direction][ne]
+        schema:
+          type: string
+      - description: Filter by direction startswith
+        in: query
+        name: filters[direction][startswith]
+        schema:
+          type: string
+      - description: Filter by type contains
+        in: query
+        name: filters[type][contains]
+        schema:
+          type: string
+      - description: Filter by type endswith
+        in: query
+        name: filters[type][endswith]
+        schema:
+          type: string
+      - description: Filter by type eq
+        in: query
+        name: filters[type][eq]
+        schema:
+          type: string
+      - description: Filter by type ne
+        in: query
+        name: filters[type][ne]
+        schema:
+          type: string
+      - description: Filter by type startswith
+        in: query
+        name: filters[type][startswith]
+        schema:
+          type: string
+      - description: Filter by user_id between
+        in: query
+        name: filters[user_id][between]
+        schema:
+          type: string
+      - description: Filter by user_id eq
+        in: query
+        name: filters[user_id][eq]
+        schema:
+          type: string
+      - description: Filter by user_id gt
+        in: query
+        name: filters[user_id][gt]
+        schema:
+          type: string
+      - description: Filter by user_id gte
+        in: query
+        name: filters[user_id][gte]
+        schema:
+          type: string
+      - description: Filter by user_id lt
+        in: query
+        name: filters[user_id][lt]
+        schema:
+          type: string
+      - description: Filter by user_id lte
+        in: query
+        name: filters[user_id][lte]
+        schema:
+          type: string
+      - description: Filter by user_id ne
+        in: query
+        name: filters[user_id][ne]
+        schema:
+          type: string
+      - description: Filter by type contains
+        in: query
+        name: type_contains
+        schema:
+          type: string
+      - description: Filter by type endswith
+        in: query
+        name: type_endswith
+        schema:
+          type: string
+      - description: Filter by type eq
+        in: query
+        name: type_eq
+        schema:
+          type: string
+      - description: Filter by type ne
+        in: query
+        name: type_ne
+        schema:
+          type: string
+      - description: Filter by type startswith
+        in: query
+        name: type_startswith
+        schema:
+          type: string
+      - description: Filter by user_id eq
+        in: query
+        name: user_id_eq
+        schema:
+          type: string
+      - description: Filter by user_id gt
+        in: query
+        name: user_id_gt
+        schema:
+          type: string
+      - description: Filter by user_id gte
+        in: query
+        name: user_id_gte
+        schema:
+          type: string
+      - description: Filter by user_id lt
+        in: query
+        name: user_id_lt
+        schema:
+          type: string
+      - description: Filter by user_id lte
+        in: query
+        name: user_id_lte
+        schema:
+          type: string
+      - description: Filter by user_id ne
+        in: query
+        name: user_id_ne
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedCreditsListResponse'
+          description: Deleted credits retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: List Deleted Credits
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscribers:
+    get:
+      description: Retrieves subscribers for a specific user across all gateways
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscribersListResponse'
+          description: User subscribers retrieved successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Get User Subscribers
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscriptions/cancel:
+    post:
+      description: 'Cancels a user''s active subscription. Supports two modes: ''gateway''
+        (delegates to payment gateway) or ''database'' (cancels locally only)'
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminCancelSubscriptionRequest'
+        description: Cancellation request with mode
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagementResultResponse'
+          description: Subscription cancelled successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Cancel User Subscription
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscriptions/cancel/abort:
+    post:
+      description: Cancels a scheduled subscription cancellation, restoring the subscription
+        to active status
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagementResultResponse'
+          description: Scheduled cancellation aborted successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No scheduled cancellation found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Abort Scheduled Cancellation
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscriptions/change-plan:
+    post:
+      description: Changes a user's subscription plan
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminChangePlanRequest'
+        description: Plan change request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanChangeResultResponse'
+          description: Plan changed successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Resource not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Change User Plan
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscriptions/pause:
+    post:
+      description: Pauses a user's active subscription through the payment gateway
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagementResultResponse'
+          description: Subscription paused successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No active subscription found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Pause User Subscription
+      tags:
+      - Billing Admin
+  /api/billing/users/{userId}/subscriptions/resume:
+    post:
+      description: Resumes a user's paused subscription through the payment gateway
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagementResultResponse'
+          description: Subscription resumed successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Invalid request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Authentication required
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Insufficient permissions
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: No paused subscription found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Server error
+      summary: Resume User Subscription
+      tags:
+      - Billing Admin
+  /api/debug/pprof:
+    get:
+      description: Returns a page listing available pprof profiles.
+      responses:
+        "200":
+          description: HTML index of available profiles
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: pprof index
+      tags:
+      - Profiling
+  /api/debug/pprof/block:
+    get:
+      description: Returns stack traces that led to blocking on synchronization primitives.
+      responses:
+        "200":
+          description: Block profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Block profile
+      tags:
+      - Profiling
+    put:
+      description: Sets the block profiling rate. 0 disables, 1 captures all, higher
+        values sample.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlockProfileRequest'
+        description: Block profile rate
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "204":
+          description: Block profile rate updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Set block profile rate
+      tags:
+      - Profiling
+  /api/debug/pprof/cmdline:
+    get:
+      description: Returns the command line of the running program.
+      responses:
+        "200":
+          description: Command line output
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Command line
+      tags:
+      - Profiling
+  /api/debug/pprof/goroutine:
+    get:
+      description: Returns stack traces of all current goroutines.
+      responses:
+        "200":
+          description: Goroutine profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Goroutine profile
+      tags:
+      - Profiling
+  /api/debug/pprof/heap:
+    get:
+      description: Returns a sampling of memory allocations.
+      responses:
+        "200":
+          description: Heap profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Heap profile
+      tags:
+      - Profiling
+  /api/debug/pprof/mutex:
+    get:
+      description: Returns stack traces of holders of contended mutexes.
+      responses:
+        "200":
+          description: Mutex profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Mutex profile
+      tags:
+      - Profiling
+    put:
+      description: Sets the mutex profiling fraction. 0 disables, 1 captures all,
+        100 samples 1%.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MutexProfileRequest'
+        description: Mutex profile fraction
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "204":
+          description: Mutex profile fraction updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Set mutex profile fraction
+      tags:
+      - Profiling
+  /api/debug/pprof/profile:
+    get:
+      description: Returns a CPU profile for the specified duration. Supports 'seconds'
+        and 'debug' query parameters.
+      responses:
+        "200":
+          description: CPU profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: CPU profile
+      tags:
+      - Profiling
+  /api/debug/pprof/status:
+    get:
+      description: Returns the current block and mutex profiling rates.
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfilingStatusResponse'
+          description: Current profiling status
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Profiling status
+      tags:
+      - Profiling
+  /api/debug/pprof/symbol:
+    get:
+      description: Looks up program counters and returns function names.
+      responses:
+        "200":
+          description: Symbol lookup results
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Symbol lookup
+      tags:
+      - Profiling
+  /api/debug/pprof/threadcreate:
+    get:
+      description: Returns stack traces that led to the creation of new OS threads.
+      responses:
+        "200":
+          description: Thread creation profile data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Thread creation profile
+      tags:
+      - Profiling
+  /api/debug/pprof/trace:
+    get:
+      description: Returns an execution trace. Supports 'seconds' query parameter.
+      responses:
+        "200":
+          description: Execution trace data
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Execution trace
+      tags:
+      - Profiling
+  /api/internal/pprof/block:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/cmdline:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/goroutine:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/heap:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/mutex:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/profile:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/symbol:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/threadcreate:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/internal/pprof/trace:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+  /api/ipfs/ipns/republish:
+    post:
+      description: |-
+        Triggers IPNS record republishing for all keys on the node.
+
+        Admin-only operation that forces all IPNS records to be republished to the network. Useful for ensuring content remains available and records are refreshed.
+
+        Prerequisites: Admin access required
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IPNSRepublishResponse'
+          description: Republish result
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Trigger IPNS republish
+      tags:
+      - Admin
+      - IPNS
+  /api/ipfs/platform-domains:
+    get:
+      description: Lists all registered platform-owned roots, including disabled ones.
+        Returns the standard paginated list shape ({data, total}) with query-param
+        filtering and paging.
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformDomainListResponse'
+          description: Platform domains listed
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List platform domains
+      tags:
+      - Admin
+      - PlatformDomains
+    post:
+      description: |-
+        Registers a platform-owned root domain that users can claim free subdomains under.
+
+        Operator-only operation. The operator's DNS zone for the root is auto-created (idempotently) from the authenticated operator.
+
+        See also: GET /platform-domains (list), PATCH /platform-domains/:id (enable/disable), DELETE /platform-domains/:id, POST /platform-domains/:id/bind
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformDomainRequest'
+        description: Platform domain to register
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformDomainResponse'
+          description: Platform domain registered
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Register platform domain
+      tags:
+      - Admin
+      - PlatformDomains
+  /api/ipfs/platform-domains/{id}:
+    delete:
+      description: Removes a registered platform root. Existing subdomain bindings
+        remain but can no longer be reconciled as platform subdomains.
+      parameters:
+      - description: Platform domain ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Platform domain deleted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete platform domain
+      tags:
+      - Admin
+      - PlatformDomains
+    patch:
+      description: Enables or disables a registered platform root. Disabling prevents
+        new claims but does not delete existing bindings.
+      parameters:
+      - description: Platform domain ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformDomainUpdateRequest'
+        description: Platform domain update
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlatformDomainResponse'
+          description: Platform domain updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update platform domain
+      tags:
+      - Admin
+      - PlatformDomains
+  /api/ipfs/platform-domains/{id}/bind:
+    post:
+      description: |-
+        Binds an operator-owned website directly to the root apex of a platform domain (e.g. "pinned.site").
+
+        Operator-only operation. The website must be owned by the authenticated operator. The apex binding reuses the platform root's auto-created zone.
+
+        See also: POST /platform-domains (register), PATCH /platform-domains/:id (enable/disable)
+      parameters:
+      - description: Platform domain ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformDomainBindRequest'
+        description: Website to bind to the root apex
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainResponse'
+          description: Website bound to platform root apex
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Bind website to platform root apex
+      tags:
+      - Admin
+      - PlatformDomains
+  /api/ipfs/websites/{id}/block:
+    post:
+      description: |-
+        Blocks a website by setting status to 'blocked'.
+
+        Admin-only operation that prevents deletion of problematic websites. Blocked websites remain in the system but cannot be modified or removed by users.
+
+        Prerequisites: Admin access required
+
+        See also: POST /websites/:id/unblock (unblock website)
+      parameters:
+      - description: Website ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteResponse'
+          description: Website blocked
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Block website
+      tags:
+      - Admin
+      - Websites
+      - Content
+  /api/ipfs/websites/{id}/unblock:
+    post:
+      description: |-
+        Unblocks a website by restoring status to 'active'.
+
+        Admin-only operation that re-enables a previously blocked website, allowing users to manage it again.
+
+        Prerequisites: Admin access required
+
+        See also: POST /websites/:id/block (block website)
+      parameters:
+      - description: Website ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebsiteResponse'
+          description: Website unblocked
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Unauthorized
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Forbidden
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Unblock website
+      tags:
+      - Admin
+      - Websites
+      - Content
+  /api/quota/allowances:
+    get:
+      description: Get a paginated list of all allowance grants
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowanceListResponse'
+          description: List of allowance grants
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List allowance grants
+      tags:
+      - quota
+      - grants
+    post:
+      description: Create a new allowance grant for a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllowanceGrantRequest'
+        description: Allowance grant configuration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowanceGrantResponse'
+          description: Grant created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create allowance grant
+      tags:
+      - quota
+      - grants
+  /api/quota/allowances/{grantID}:
+    delete:
+      description: Deactivate an allowance grant
+      parameters:
+      - description: Numeric ID of the allowance grant
+        in: path
+        name: grantID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Grant deactivated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Deactivate allowance grant
+      tags:
+      - quota
+      - grants
+    put:
+      description: Update an existing allowance grant
+      parameters:
+      - description: Numeric ID of the allowance grant
+        in: path
+        name: grantID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllowanceGrantRequest'
+        description: Allowance grant configuration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllowanceGrantResponse'
+          description: Grant updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update allowance grant
+      tags:
+      - quota
+      - grants
+  /api/quota/plans:
+    get:
+      description: Get a paginated list of all quota plans
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanListResponse'
+          description: List of quota plans
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List quota plans
+      tags:
+      - quota
+      - plans
+    post:
+      description: Create a new quota plan with specified limits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotaPlanRequest'
+        description: Quota plan configuration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaPlanResponse'
+          description: Plan created successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create quota plan
+      tags:
+      - quota
+      - plans
+  /api/quota/plans/{planID}:
+    delete:
+      description: Delete a quota plan by ID
+      parameters:
+      - description: Numeric ID of the quota plan
+        in: path
+        name: planID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Plan deleted successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete quota plan
+      tags:
+      - quota
+      - plans
+    get:
+      description: Get details of a specific quota plan by ID
+      parameters:
+      - description: Numeric ID of the quota plan
+        in: path
+        name: planID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaPlanResponse'
+          description: Quota plan details
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get quota plan
+      tags:
+      - quota
+      - plans
+    put:
+      description: Update an existing quota plan
+      parameters:
+      - description: Numeric ID of the quota plan
+        in: path
+        name: planID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuotaPlanRequest'
+        description: Quota plan configuration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuotaPlanResponse'
+          description: Plan updated successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update quota plan
+      tags:
+      - quota
+      - plans
+  /api/quota/plans/{planID}/default:
+    post:
+      description: Set a quota plan as the default for new users
+      parameters:
+      - description: Numeric ID of the quota plan
+        in: path
+        name: planID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Default plan set successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Set default quota plan
+      tags:
+      - quota
+      - plans
+  /api/quota/system/cleanup:
+    post:
+      description: Delete old quota records based on retention policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CleanupRequest'
+        description: Cleanup options
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CleanupResponse'
+          description: Cleanup result
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Cleanup old records
+      tags:
+      - quota
+      - system
+  /api/quota/system/reconcile:
+    post:
+      description: Reconcile user quota usage with actual storage/files
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReconcileRequest'
+        description: Reconciliation options
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconcileResponse'
+          description: Reconciliation result
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Reconcile quota usage
+      tags:
+      - quota
+      - system
+  /api/quota/system/stats:
+    get:
+      description: Get system-wide quota usage statistics
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemStatsResponse'
+          description: System statistics
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get system statistics
+      tags:
+      - quota
+      - system
+  /api/quota/user-configs:
+    get:
+      description: Get a paginated list of user quota configurations with filtering
+        and sorting
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserQuotaConfigListResponse'
+          description: List of user quota configs
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List user quota configs
+      tags:
+      - quota
+      - user-configs
+  /api/quota/user-configs/{userID}:
+    put:
+      description: Update a user's quota configuration
+      parameters:
+      - description: Numeric ID of the user
+        in: path
+        name: userID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQuotaConfigUpdateRequest'
+        description: User quota config update
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserQuotaConfigResponse'
+          description: User quota config updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update user quota config
+      tags:
+      - quota
+      - user-configs
+  /api/quota/user-configs/{userID}/plan:
+    delete:
+      description: Remove a user's assigned quota plan (sets to NULL)
+      parameters:
+      - description: Numeric ID of the user
+        in: path
+        name: userID
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: User quota plan reset successfully
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Reset user quota plan
+      tags:
+      - quota
+      - user-configs
+  /api/social/providers:
+    get:
+      description: Get a paginated list of all configured social login providers.
+        Secrets are never returned.
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to 10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Starting index of the items to return (0-based). Defaults to 0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderListResponse'
+          description: List of providers
+          headers:
+            X-Total-Count:
+              description: Total number of items
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List social login providers
+      tags:
+      - social
+      - providers
+    post:
+      description: Create a new social login provider configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialProviderRequest'
+        description: Provider configuration
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderResponse'
+          description: Provider created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create social login provider
+      tags:
+      - social
+      - providers
+  /api/social/providers/{id}:
+    delete:
+      description: Delete a social login provider by ID
+      parameters:
+      - description: Numeric ID of the provider
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Provider deleted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete social login provider
+      tags:
+      - social
+      - providers
+    get:
+      description: Get a single social login provider by ID
+      parameters:
+      - description: Numeric ID of the provider
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderResponse'
+          description: Provider details
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get social login provider
+      tags:
+      - social
+      - providers
+    put:
+      description: Update an existing social login provider. Fields that are omitted
+        are left unchanged, so the client secret can be omitted to keep the stored
+        one.
+      parameters:
+      - description: Numeric ID of the provider
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SocialProviderUpdateRequest'
+        description: Provider fields to change (omitted fields are left unchanged)
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderResponse'
+          description: Provider updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update social login provider
+      tags:
+      - social
+      - providers
+  /api/social/providers/{id}/disable:
+    post:
+      description: Disable a social login provider
+      parameters:
+      - description: Numeric ID of the provider
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderResponse'
+          description: Provider disabled
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Disable social login provider
+      tags:
+      - social
+      - providers
+  /api/social/providers/{id}/enable:
+    post:
+      description: Enable a social login provider
+      parameters:
+      - description: Numeric ID of the provider
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SocialProviderResponse'
+          description: Provider enabled
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Enable social login provider
+      tags:
+      - social
+      - providers
+  /api/users:
+    get:
+      description: Returns a filterable, sortable, paginated list of portal users.
+        Authentication- and database-sensitive fields are never returned.
+      parameters:
+      - description: Ending index of the items to return (exclusive). Defaults to
+          10.
+        in: query
+        name: _end
+        schema:
+          type: integer
+      - description: Sort order (asc/desc)
+        in: query
+        name: _order
+        schema:
+          type: string
+      - description: Comma-separated sort fields (e.g. id,email,created_at)
+        in: query
+        name: _sort
+        schema:
+          type: string
+      - description: Starting index of the items to return (0-based). Defaults to
+          0.
+        in: query
+        name: _start
+        schema:
+          type: integer
+      - description: Filter by exact email address
+        in: query
+        name: email
+        schema:
+          type: string
+      - description: Filter by verification state (true/false)
+        in: query
+        name: verified
+        schema:
+          type: boolean
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListResponse'
+          description: List of users
+          headers:
+            X-Total-Count:
+              description: Total number of items
+              schema:
+                type: string
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: List users
+      tags:
+      - Users
+    post:
+      description: Creates a portal account with an email and password, plus optional
+        names and verification-email behavior. The password is hashed server-side
+        and never returned.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+        description: Account details
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Success
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Create user
+      tags:
+      - Users
+  /api/users/{id}:
+    delete:
+      description: Permanently deletes a portal user. Deleting your own (the authenticated
+        administrator's) account is rejected.
+      parameters:
+      - description: Numeric ID of the user
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: User deleted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Delete user
+      tags:
+      - Users
+    get:
+      description: Returns a single portal user by numeric ID.
+      parameters:
+      - description: Numeric ID of the user
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User details
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Get user
+      tags:
+      - Users
+    patch:
+      description: Partially updates a portal user. Fields that are omitted are left
+        unchanged; an explicit false or empty value is applied. A new password is
+        hashed server-side.
+      parameters:
+      - description: Numeric ID of the user
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+        description: Fields to change (omitted fields are left unchanged)
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: User updated
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad request
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not found
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Validation failed
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Internal server error
+      summary: Update user
+      tags:
+      - Users
+servers:
+- url: /
