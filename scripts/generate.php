@@ -49,6 +49,85 @@ function requested(array $args): array
     return $args;
 }
 
+/**
+ * Reads every proc_open pipe to EOF concurrently using stream_select().
+ *
+ * Draining the pipes sequentially (stream_get_contents on stdout, then stderr)
+ * is a classic deadlock: a child that fills the stderr pipe buffer (>64KB)
+ * blocks on write, so it never closes stdout, and the stdout read never
+ * returns — the script hangs in proc_close(). Watching both pipes at once
+ * keeps every buffer draining so the child always makes progress.
+ *
+ * Exit status is unaffected: the caller still closes the pipes and calls
+ * proc_close(), which reaps the child and exposes the real exit code.
+ *
+ * @param array{1:resource,2:resource} $pipes proc_open pipes keyed by fd
+ * @return array{0:string,1:string} [stdout, stderr]
+ */
+function drainPipes(array $pipes): array
+{
+    $out = [1 => '', 2 => ''];
+    $open = [];
+
+    foreach ([1, 2] as $fd) {
+        if (isset($pipes[$fd]) && is_resource($pipes[$fd])) {
+            stream_set_blocking($pipes[$fd], false);
+            $open[$fd] = $pipes[$fd];
+        }
+    }
+
+    while ($open) {
+        $read = array_values($open);
+        $write = null;
+        $except = null;
+        $ready = @stream_select($read, $write, $except, null);
+
+        if ($ready === false) {
+            // Interrupted or transient stream error: drain whatever is still
+            // readable instead of abandoning the child, but stop if nothing
+            // makes progress so we never spin forever.
+            $read = array_values($open);
+        }
+
+        $progress = false;
+        foreach ($read as $stream) {
+            $chunk = fread($stream, 65536);
+
+            if ($chunk === false || $chunk === '') {
+                if (feof($stream)) {
+                    foreach ($open as $fd => $s) {
+                        if ($s === $stream) {
+                            unset($open[$fd]);
+                            $progress = true;
+                            break;
+                        }
+                    }
+                }
+                continue;
+            }
+
+            $progress = true;
+            if ($stream === $pipes[1]) {
+                $out[1] .= $chunk;
+            } else {
+                $out[2] .= $chunk;
+            }
+        }
+
+        if ($ready === false && !$progress) {
+            break;
+        }
+    }
+
+    return [$out[1], $out[2]];
+}
+
+// When the file is included by tests, only expose the helpers above; run the
+// generator only when invoked directly (php scripts/generate.php).
+if (realpath($_SERVER['argv'][0] ?? '') !== __FILE__) {
+    return;
+}
+
 foreach (requested(array_slice($argv, 1)) as $name) {
     [$specRel, $outRel, $configRel] = targets()[$name];
 
@@ -92,8 +171,7 @@ foreach (requested(array_slice($argv, 1)) as $name) {
         exit(1);
     }
 
-    $stdout = stream_get_contents($pipes[1]);
-    $stderr = stream_get_contents($pipes[2]);
+    [$stdout, $stderr] = drainPipes($pipes);
     fclose($pipes[1]);
     fclose($pipes[2]);
     $status = proc_close($proc);
