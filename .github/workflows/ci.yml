@@ -1,0 +1,106 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: PHP ${{ matrix.php }} · lint + tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php:
+          - "8.1"
+          - "8.2"
+          - "8.3"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json and lock file
+        run: composer validate --no-check-publish
+
+      # composer.lock is committed, so install the exact locked versions for a
+      # reproducible run. Composer caches are handled by ramsey/composer-install.
+      - name: Install dependencies (locked)
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: locked
+
+      - name: PHP syntax lint
+        run: composer lint
+
+      - name: PHPUnit
+        run: composer test
+
+  # Regenerating the clients requires Docker (scripts/generate.php shells out to
+  # openapitools/openapi-generator-cli), so this runs in its own Docker-enabled
+  # job on ubuntu-latest instead of inside the PHP matrix. It regenerates each
+  # client and fails if the committed generated/ output has drifted from what the
+  # generator would produce for the vendored specs/config.
+  openapi:
+    name: OpenAPI generation drift (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [account, admin]
+    env:
+      # Must match the image scripts/generate.php defaults to locally (currently
+      # openapitools/openapi-generator-cli:latest == 7.26.0-SNAPSHOT). Pin this
+      # to a specific tag or digest for fully reproducible generation, then
+      # commit any resulting changes under generated/ (the drift check below).
+      OPENAPI_GENERATOR_IMAGE: openapitools/openapi-generator-cli:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # runner image already ships PHP + Composer + Docker, but install PHP
+      # explicitly so this job does not depend on runner image contents.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          coverage: none
+          tools: composer:v2
+
+      # Generation is Docker-based; fail fast with a clear message if Docker is
+      # missing rather than letting scripts/generate.php fail cryptically later.
+      - name: Check Docker availability
+        shell: bash
+        run: |
+          if ! command -v docker >/dev/null 2>&1; then
+            echo "::error::OpenAPI generation requires Docker (openapitools/openapi-generator-cli). This job must run on a Docker-enabled runner; ubuntu-latest provides it."
+            exit 1
+          fi
+
+      - name: Regenerate ${{ matrix.target }} client
+        run: composer generate ${{ matrix.target }}
+
+      - name: Detect generated-code drift
+        shell: bash
+        run: |
+          status="$(git status --porcelain --untracked-files=all -- generated/)"
+          if [ -n "$status" ]; then
+            echo "::error::Generated code drift detected under generated/."
+            echo "Run 'composer generate' locally and commit the resulting files."
+            echo "$status"
+            git diff -- generated/
+            exit 1
+          fi
