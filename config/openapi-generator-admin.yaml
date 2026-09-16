@@ -1,0 +1,18 @@
+# OpenAPI Generator configuration for the Portal Admin API PHP client.
+#
+# This config is consumed by scripts/generate.php (via openapitools/openapi-generator-cli).
+# The generated output is committed under generated/admin and is auto-managed — do NOT edit it.
+#
+# The namespace deliberately differs from the handwritten layer (LumeWeb\Portal\Admin) so
+# generated and hand-written code can never collide.
+generatorName: php
+gitUserId: LumeWeb
+gitRepoId: php-portal-sdk
+# NOTE: only invokerPackage is set on purpose. The PHP generator derives the
+# model/api namespaces by appending \Model and \Api to the invoker package.
+invokerPackage: "LumeWeb\\Portal\\Generated\\Admin"
+srcBasePath: lib
+artifactVersion: "0.1.0"
+composerPackageName: lumeweb/php-portal-sdk-generated-admin
+packageName: admin
+hideGenerationTimestamp: true
