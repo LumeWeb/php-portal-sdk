@@ -62,9 +62,11 @@ function requested(array $args): array
  * proc_close(), which reaps the child and exposes the real exit code.
  *
  * @param array{1:resource,2:resource} $pipes proc_open pipes keyed by fd
+ * @param (callable(array<int,resource> &$read, ?array &$write, ?array &$except, ?int $seconds): (int|false))|null $select
+ *     stream_select() wrapper, injectable for tests; defaults to the real call.
  * @return array{0:string,1:string} [stdout, stderr]
  */
-function drainPipes(array $pipes): array
+function drainPipes(array $pipes, ?callable $select = null): array
 {
     $out = [1 => '', 2 => ''];
     $open = [];
@@ -76,16 +78,23 @@ function drainPipes(array $pipes): array
         }
     }
 
+    // stream_select() rewrites its array arguments in place, so the wrapper has
+    // to forward them by reference.
+    $select = $select ?? static function (array &$read, ?array &$write, ?array &$except, ?int $seconds) {
+        return stream_select($read, $write, $except, $seconds);
+    };
+
     while ($open) {
         $read = array_values($open);
         $write = null;
         $except = null;
-        $ready = @stream_select($read, $write, $except, null);
+        $ready = @$select($read, $write, $except, null);
 
         if ($ready === false) {
-            // Interrupted or transient stream error: drain whatever is still
-            // readable instead of abandoning the child, but stop if nothing
-            // makes progress so we never spin forever.
+            // A false return only means a transient select error (e.g. EINTR
+            // from a caught signal), never that the child is done. Treat every
+            // open pipe as readable so we keep draining whatever is buffered;
+            // the loop exits only when every pipe has hit EOF.
             $read = array_values($open);
         }
 
@@ -115,7 +124,11 @@ function drainPipes(array $pipes): array
         }
 
         if ($ready === false && !$progress) {
-            break;
+            // Nothing became readable and nothing drained, but the pipes are
+            // still open. Back off briefly so a persistent transient-error
+            // storm cannot busy-loop the CPU, then keep retrying — the loop
+            // never ends until every pipe has hit EOF.
+            usleep(1000);
         }
     }
 

@@ -92,6 +92,50 @@ final class GenerateScriptTest extends TestCase
     }
 
     /**
+     * A transient stream_select() failure (EINTR or similar) must never end the
+     * drain loop while a pipe is still open: the loop has to keep retrying
+     * until both pipes reach EOF. This drives the worst case — select()
+     * reporting false on every single call — while the child writes far more
+     * than the pipe buffer to BOTH streams. If the drain abandoned the pipes
+     * after a false/empty read it would truncate the output or hang in
+     * proc_close(), and the watchdog below turns such a regression into a
+     * failure instead of a stall.
+     */
+    public function testDrainSurvivesTransientSelectFailures(): void
+    {
+        $exit = $this->runWithFailFast(function (): void {
+            // Every readiness call reports the same false result PHP returns
+            // on an interrupted select; drainPipes must fall back to draining
+            // whatever is buffered and keep retrying until EOF.
+            $select = static function (array &$read, &$write, &$except, $seconds) {
+                return false;
+            };
+
+            $code = sprintf(
+                'fwrite(STDOUT, str_repeat(%s, %d)); fflush(STDOUT); fwrite(STDERR, str_repeat(%s, %d)); fflush(STDERR);',
+                var_export('A', true),
+                self::LARGE,
+                var_export('B', true),
+                self::LARGE,
+            );
+            [$proc, $pipes] = $this->spawnZeroArgPhp($code);
+
+            [$stdout, $stderr] = \drainPipes($pipes, $select);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            $status = proc_close($proc);
+
+            self::assertSame(0, $status);
+            self::assertSame(self::LARGE, strlen($stdout));
+            self::assertSame(self::LARGE, strlen($stderr));
+            self::assertSame(str_repeat('A', self::LARGE), $stdout);
+            self::assertSame(str_repeat('B', self::LARGE), $stderr);
+        });
+
+        self::assertSame(0, $exit, 'drain must survive transient select failures and still complete within the watchdog window');
+    }
+
+    /**
      * @return array{0:resource,1:array{1:resource,2:resource}}
      */
     private function spawnZeroArgPhp(string $code): array
